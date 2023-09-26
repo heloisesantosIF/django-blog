@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404
 from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
-from django.views.generic.detail import DetailView
+from django.views.generic import DetailView, ListView, TemplateView
 #oq é nosso
 from blog.models import Post
 
@@ -90,3 +90,12 @@ def create_post(request):
         )
         response['Access-Control-Allow-Origin'] = '*'
         return response
+    
+class PostListView(ListView):
+    model = Post
+    template_name = 'post/post_list.html'
+    context_object_name = 'posts'
+
+class SobreTemplateView(TemplateView):
+    template_name = 'post/sobre.html'
+
