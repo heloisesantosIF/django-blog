@@ -25,6 +25,7 @@ Djago Framework
 {% endblock %}
 {% block main %}
 <div class="container">
+    {% include 'messages.html' %}
     {% block content %}
     <p>Conteúdo padrão...</p>
     {% endblock content %}
@@ -43,6 +44,6 @@ Djago Framework
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <!-- JS do Projeto -->
-4/7
+
 <script src="{% static 'js/base.js' %}"></script>
 {% endblock %}
