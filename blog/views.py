@@ -2,7 +2,7 @@
 import json
 #dps do django
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404
 from django.core.serializers.json import DjangoJSONEncoder
@@ -132,5 +132,15 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super(PostUpdateView, self).get_context_data(**kwargs)
         context['form_title'] = 'Editando o post'
-        
+
         return context
+    
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    template_name = 'post/post_confirm_delete_form.html'
+    success_url = reverse_lazy('posts_all')
+    success_message = 'A postagem foi excluída com sucesso.'
+    
+    def form_valid(self, form):
+        messages.success(self.request, self.success_message)
+        return super(PostDeleteView, self).form_valid(form)

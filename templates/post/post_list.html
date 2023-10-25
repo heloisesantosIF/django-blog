@@ -10,6 +10,10 @@
         </a>
             {% for post in posts %}
             <a href="{% url 'post_edit' pk=post.id %}" class="link-secondary">Editar</a>
+            <a href="{% url 'post_delete' pk=post.id %}" class="link-secondary">
+                Excluir
+            </a>
+
                 <article>
                 <h2>Em: {{ post.pub_date|date:"d / m / Y" }}</h2>
                 <p>{{ post.body_text }}</p>
