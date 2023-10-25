@@ -2,7 +2,7 @@
 import json
 #dps do django
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404
 from django.core.serializers.json import DjangoJSONEncoder
@@ -14,6 +14,7 @@ from blog.models import Post
 from blog.forms import PostModelForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 @login_required
 def index(request):
@@ -73,6 +74,13 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     form_class = PostModelForm
     success_message = 'Postagem salva com sucesso.'
 
+    def get_context_data(self, **kwargs):
+        context = super(PostCreateView, self).get_context_data(**kwargs)
+        context['form_title'] = 'Criando um post'
+
+        return context
+
+
     def form_valid(self, request, *args, **kwargs):
         messages.success(self.request, self.success_message)
         return super(PostCreateView, self).form_valid(request, *args, **kwargs)
@@ -111,3 +119,18 @@ class PostListView(ListView):
 class SobreTemplateView(TemplateView):
     template_name = 'post/sobre.html'
 
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    model = Post
+    template_name = 'post/post_form.html'
+    success_url = reverse_lazy('posts_all')
+    form_class = PostModelForm
+    success_message = 'Postagem salva com sucesso.'
+    # implementa o método que conclui a ação com sucesso
+    def form_valid(self, form):
+        messages.success(self.request, self.success_message)
+        return super(PostUpdateView, self).form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super(PostUpdateView, self).get_context_data(**kwargs)
+        context['form_title'] = 'Editando o post'
+        
+        return context
