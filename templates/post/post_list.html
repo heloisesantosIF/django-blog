@@ -9,20 +9,26 @@
             + Novo post
         </a>
             {% for post in posts %}
-            <a href="{% url 'post_edit' pk=post.id %}" class="link-secondary">Editar</a>
             <a href="{% url 'post_delete' pk=post.id %}" class="link-secondary">
                 Excluir
             </a>
 
                 <article>
                 <h2>Em: {{ post.pub_date|date:"d / m / Y" }}</h2>
-                <p>{{ post.body_text }}</p>
-                </article>
                 
                 {% if post.categoria %}
                     <span>Categoria: {{ post.categoria }}</span>
                 {% endif %}
-                {% endfor %}
+
+                | {% if post.autor %}
+                    <span>Autor: {{ post.autor.username}}</span>
+                {& else %}
+                    <span>Autor: Desconhecido</span>
+                {% endif %} <br>
+
+                <p>{{ post.body_text }} |  <a href="{% url 'post_edit' pk=post.id %}" class="link-secondary">Editar</a></p>
+            {% endfor %}
+            </article>
     </div>
 </div>
 {% endblock %} {# fecha o bloco content #}
